@@ -1,4 +1,4 @@
-import { methods } from './data';
+import * as data from './data';
 
 type MethodType = 'instanceMethods' | 'staticMethods';
 
@@ -15,13 +15,13 @@ const baseMethod = (target: any, key: string, descriptor: TypedPropertyDescripto
     name = target.name;
   }
 
-  if (!methods[methodType][name]) {
-    methods[methodType][name] = {};
+  if (!data.methods[methodType][name]) {
+    data.methods[methodType][name] = {};
   }
 
   const method = descriptor.value;
-  methods[methodType][name] = {
-    ...methods[methodType][name],
+  data.methods[methodType][name] = {
+    ...data.methods[methodType][name],
     [key]: method,
   };
 };

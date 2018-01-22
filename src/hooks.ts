@@ -1,6 +1,6 @@
 import { MongooseDocument } from 'mongoose';
 
-import { hooks as hooksData } from './data';
+import * as data from "./data";
 
 type DocumentMethod = 'init' | 'validate' | 'save' | 'remove';
 type QueryMethod = 'count' | 'find' | 'findOne' | 'findOneAndRemove' | 'findOneAndUpdate' | 'update';
@@ -74,10 +74,10 @@ const hooks: Hooks = {
 };
 
 const addToHooks = (name, hookType: 'pre' | 'post', args) => {
-  if (!hooksData[name]) {
-    hooksData[name] = { pre: [], post: [] };
+  if (!data.hooks[name]) {
+    data.hooks[name] = { pre: [], post: [] };
   }
-  hooksData[name][hookType].push(args);
+  data.hooks[name][hookType].push(args);
 };
 
 export const pre = hooks.pre;

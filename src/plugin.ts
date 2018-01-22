@@ -1,9 +1,9 @@
-import { plugins } from './data';
+import * as data from './data';
 
 export const plugin = (mongoosePlugin, options?) => (constructor: any) => {
   const name = constructor.name;
-  if (!plugins[name]) {
-    plugins[name] = [];
+  if (!data.plugins[name]) {
+    data.plugins[name] = [];
   }
-  plugins[name].push({ mongoosePlugin, options });
+  data.plugins[name].push({ mongoosePlugin, options });
 };

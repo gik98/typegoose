@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
 
-import { schema, models, methods, virtuals, hooks, plugins, constructors } from './data';
+import * as data from "./data";
 
 export * from './method';
 export * from './prop';
@@ -22,11 +22,11 @@ export interface GetModelForClassOptions {
 export class Typegoose {
   getModelForClass<T>(t: T, { existingMongoose, schemaOptions, existingConnection }: GetModelForClassOptions = {}) {
     const name = this.constructor.name;
-    if (!models[name]) {
+    if (!data.models[name]) {
       this.setModelForClass(t, { existingMongoose, schemaOptions, existingConnection });
     }
 
-    return models[name] as ModelType<this> & T;
+    return data.models[name] as ModelType<this> & T;
   }
 
   setModelForClass<T>(t: T, { existingMongoose, schemaOptions, existingConnection }: GetModelForClassOptions = {}) {
@@ -44,17 +44,16 @@ export class Typegoose {
       parentCtor = Object.getPrototypeOf(parentCtor.prototype).constructor;
     }
 
-    let model = mongoose.model.bind(mongoose);
-    if (existingConnection) {
-      model = existingConnection.model.bind(existingConnection);
-    } else if (existingMongoose) {
-      model = existingMongoose.model.bind(existingMongoose);
-    }
+    if (existingConnection)
+	    data.models[name] = existingConnection.model(name, sch);
+    else if (existingMongoose)
+    	data.models[name] = existingMongoose.model(name, sch);
+    else
+    	data.models[name] = mongoose.model(name, sch);
 
-    models[name] = model(name, sch);
-    constructors[name] = this.constructor;
+    data.constructors[name] = this.constructor;
 
-    return models[name] as ModelType<this> & T;
+    return data.models[name] as ModelType<this> & T;
   }
 
   private buildSchema(name: string, schemaOptions, sch?: mongoose.Schema) {
@@ -62,44 +61,44 @@ export class Typegoose {
 
     if (!sch) {
       sch = schemaOptions ?
-        new Schema(schema[name], schemaOptions) :
-        new Schema(schema[name]);
+        new Schema(data.schema[name], schemaOptions) :
+        new Schema(data.schema[name]);
     } else {
-      sch.add(schema[name]);
+      sch.add(data.schema[name]);
     }
 
-    const staticMethods = methods.staticMethods[name];
+    const staticMethods = data.methods.staticMethods[name];
     if (staticMethods) {
       sch.statics = Object.assign(staticMethods, sch.statics || {});
     } else {
       sch.statics = sch.statics || {};
     }
 
-    const instanceMethods = methods.instanceMethods[name];
+    const instanceMethods = data.methods.instanceMethods[name];
     if (instanceMethods) {
       sch.methods = Object.assign(instanceMethods, sch.methods || {});
     } else {
       sch.methods = sch.methods || {};
     }
 
-    if (hooks[name]) {
-      const preHooks = hooks[name].pre;
+    if (data.hooks[name]) {
+      const preHooks = data.hooks[name].pre;
       preHooks.forEach((preHookArgs) => {
         (sch as any).pre(...preHookArgs);
       });
-      const postHooks = hooks[name].post;
+      const postHooks = data.hooks[name].post;
       postHooks.forEach((postHookArgs) => {
         (sch as any).post(...postHookArgs);
       });
     }
 
-    if (plugins[name]) {
-      _.forEach(plugins[name], (plugin) => {
+    if (data.plugins[name]) {
+      _.forEach(data.plugins[name], (plugin) => {
         sch.plugin(plugin.mongoosePlugin, plugin.options);
       });
     }
 
-    const getterSetters = virtuals[name];
+    const getterSetters = data.virtuals[name];
     _.forEach(getterSetters, (value, key) => {
       if (value.get) {
         sch.virtual(key).get(value.get);

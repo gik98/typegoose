@@ -3,8 +3,9 @@ import { MongooseDocument } from 'mongoose';
 export declare const pre: {
     <T>(method: "init" | "validate" | "save" | "remove", fn: (this: T & MongooseDocument, next: (err?: Error) => void) => void): (constructor: any) => void;
     <T>(method: "init" | "validate" | "save" | "remove", parallel: boolean, fn: (this: T & MongooseDocument, next: (err?: Error) => void, done: () => void) => void): (constructor: any) => void;
-    <T>(method: "count" | "find" | "findOne" | "findOneAndRemove" | "findOneAndUpdate" | "update" | "insertMany", fn: (next: (err?: Error) => void) => void): (constructor: any) => void;
-    <T>(method: "count" | "find" | "findOne" | "findOneAndRemove" | "findOneAndUpdate" | "update" | "insertMany", parallel: boolean, fn: (next: (err?: Error) => void, done: () => void) => void): (constructor: any) => void;
+    <T>(method: "count" | "find" | "findOne" | "findOneAndRemove" | "findOneAndUpdate" | "update" | "augmentedFindOneAndUpdate" | "insertMany", fn: (next: (err?: Error) => void) => void): (constructor: any) => void;
+    <T>(method: "count" | "find" | "findOne" | "findOneAndRemove" | "findOneAndUpdate" | "update" | "augmentedFindOneAndUpdate" | "insertMany", parallel: boolean, fn: (next: (err?: Error) => void, done: () => void) => void): (constructor: any) => void;
+    <T>(method: "augmentedFindOneAndUpdate", fn: (next: (err?: Error) => void, update: object) => void): (constructor: any) => void;
 };
 export declare const post: {
     <T>(method: "count", fn: (result: number, next?: (err?: Error) => void) => void): (constructor: any) => void;

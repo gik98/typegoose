@@ -3,7 +3,7 @@ import { MongooseDocument } from 'mongoose';
 import * as data from "./data";
 
 type DocumentMethod = 'init' | 'validate' | 'save' | 'remove';
-type QueryMethod = 'count' | 'find' | 'findOne' | 'findOneAndRemove' | 'findOneAndUpdate' | 'update' | 'augmentedFindOneAndUpdate';
+type QueryMethod = 'count' | 'find' | 'findOne' | 'findOneAndRemove' | 'findOneAndUpdate' | 'update';
 type ModelMethod = 'insertMany';
 
 type ClassDecorator = (constructor: any) => void;
@@ -19,7 +19,7 @@ type DocumentPreParallelFn<T> = (this: TypegooseDoc<T>, next: HookNextFn, done: 
 type SimplePreSerialFn<T> = (next: HookNextFn) => void;
 type SimplePreParallelFn<T> = (next: HookNextFn, done: PreDoneFn) => void;
 
-type AugmentedPreSerialFn<T> = (next: HookNextFn, update: object) => void;
+type AugmentedPreSerialFn<T> = (next: HookNextFn, update: any) => void;
 
 type DocumentPostFn<T> = (this: TypegooseDoc<T>, doc: TypegooseDoc<T>, next?: HookNextFn) => void;
 type ModelPostFn<T> = (result: any, next?: HookNextFn) => void;

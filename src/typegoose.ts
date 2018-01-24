@@ -86,7 +86,7 @@ export class Typegoose {
 			preHooks.forEach((preHookArgs) => {
 				if (preHookArgs[0] === "augmentedFindOneAndUpdate") {
 					<any>sch.pre("findOneAndUpdate", function (next) {
-						preHookArgs[1](next, this.getUpdate());
+						preHookArgs[1](next, this.getQuery, this.getUpdate());
 					})
 				} else
 					(sch as any).pre(...preHookArgs);

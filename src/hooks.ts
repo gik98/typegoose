@@ -19,7 +19,7 @@ type DocumentPreParallelFn<T> = (this: TypegooseDoc<T>, next: HookNextFn, done: 
 type SimplePreSerialFn<T> = (next: HookNextFn) => void;
 type SimplePreParallelFn<T> = (next: HookNextFn, done: PreDoneFn) => void;
 
-type AugmentedPreSerialFn<T> = (next: HookNextFn, update: any) => void;
+type AugmentedPreSerialFn<T> = (next: HookNextFn, query: any, update: any) => void;
 
 type DocumentPostFn<T> = (this: TypegooseDoc<T>, doc: TypegooseDoc<T>, next?: HookNextFn) => void;
 type ModelPostFn<T> = (result: any, next?: HookNextFn) => void;

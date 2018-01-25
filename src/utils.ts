@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 
 import * as data from "./data"
 
-export const isPrimitive = (Type) => _.includes(['String', 'Number', 'Boolean', 'Date', 'Buffer'], Type.name);
+export const isPrimitive = (Type) => _.includes(['String', 'Number', 'Boolean', 'Date', 'SchemaBuffer'], Type.name);
 
 export const isMongoose = (Type) => _.includes(['Mixed', 'Embedded'], Type.name);
 

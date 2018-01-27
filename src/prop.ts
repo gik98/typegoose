@@ -3,8 +3,8 @@ import {SchemaType} from 'mongoose';
 import * as _ from 'lodash';
 
 import * as data from "./data"
-import {initAsArray, initAsObject, isNumber, isPrimitive, isMongoose, isString} from './utils';
-import {InvalidPropError, NoMetadataError, NotNumberTypeError, NotStringTypeError} from './errors';
+import {initAsArray, initAsObject, isDate, isMongoose, isNumber, isPrimitive, isString} from './utils';
+import {InvalidPropError, NoMetadataError, NotDateTypeError, NotNumberTypeError, NotStringTypeError} from './errors';
 
 export type Func = (...args: any[]) => any;
 
@@ -14,7 +14,7 @@ export interface SyncValidationOption {
 	validator: (v: any) => boolean
 }
 
-export interface PromiseValidationOption{
+export interface PromiseValidationOption {
 	validator: (v: any) => Promise<boolean>;
 }
 
@@ -46,15 +46,25 @@ export interface ValidateStringOptions {
 	match?: RegExp | [RegExp, string];
 }
 
+export interface TTLOptions {
+	expires?: Number | String;
+}
+
 export type PropOptionsWithNumberValidate = PropOptions & ValidateNumberOptions;
 export type PropOptionsWithStringValidate = PropOptions & ValidateStringOptions;
-export type PropOptionsWithValidate = PropOptionsWithNumberValidate | PropOptionsWithStringValidate;
+export type PropOptionsWithTTLOptions = PropOptions & TTLOptions;
+export type PropOptionsWithValidate =
+	PropOptionsWithNumberValidate
+	| PropOptionsWithStringValidate
+	| PropOptionsWithTTLOptions;
 
 const isWithStringValidate = (options: PropOptionsWithStringValidate) =>
 	(options.minlength || options.maxlength || options.match);
 
 const isWithNumberValidate = (options: PropOptionsWithNumberValidate) =>
 	(options.min || options.max);
+
+const isWithTTLOptions = (options: PropOptionsWithTTLOptions) => (!!options.expires);
 
 const baseProp = (rawOptions, Type, target, key, isArray = false) => {
 	const name = target.constructor.name;
@@ -128,6 +138,10 @@ const baseProp = (rawOptions, Type, target, key, isArray = false) => {
 
 	if (isWithNumberValidate(rawOptions) && !isNumber(Type)) {
 		throw new NotNumberTypeError(key);
+	}
+
+	if (isWithTTLOptions(rawOptions) && !isDate(Type)) {
+		throw new NotDateTypeError(key);
 	}
 
 	const instance = new Type();

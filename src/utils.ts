@@ -11,25 +11,27 @@ export const isNumber = (Type) => Type.name === 'Number';
 
 export const isString = (Type) => Type.name === 'String';
 
+export const isDate = (Type) => Type.name === 'Date';
+
 export const initAsObject = (name, key) => {
-  if (!data.schema[name]) {
-    data.schema[name] = {};
-  }
-  if (!data.schema[name][key]) {
-    data.schema[name][key] = {};
-  }
+	if (!data.schema[name]) {
+		data.schema[name] = {};
+	}
+	if (!data.schema[name][key]) {
+		data.schema[name][key] = {};
+	}
 };
 
 export const initAsArray = (name, key) => {
-  if (!data.schema[name]) {
-    data.schema[name] = {};
-  }
-  if (!data.schema[name][key]) {
-    data.schema[name][key] = [{}];
-  }
+	if (!data.schema[name]) {
+		data.schema[name] = {};
+	}
+	if (!data.schema[name][key]) {
+		data.schema[name][key] = [{}];
+	}
 };
 
 export const getClassForDocument = (document: mongoose.Document): any => {
-  const modelName = (document.constructor as mongoose.Model<typeof document>).modelName;
-  return data.constructors[modelName];
+	const modelName = (document.constructor as mongoose.Model<typeof document>).modelName;
+	return data.constructors[modelName];
 };

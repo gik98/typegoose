@@ -16,6 +16,12 @@ export class NotStringTypeError extends Error {
   }
 }
 
+export class NotDateTypeError extends Error {
+	constructor(key: string) {
+		super(`Type of ${key} property is not a Date.`);
+	}
+}
+
 export class NoMetadataError extends Error {
   constructor(key: string) {
     super(

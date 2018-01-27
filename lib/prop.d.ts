@@ -32,9 +32,13 @@ export interface ValidateStringOptions {
     maxlength?: number | [number, string];
     match?: RegExp | [RegExp, string];
 }
+export interface TTLOptions {
+    expires?: Number | String;
+}
 export declare type PropOptionsWithNumberValidate = PropOptions & ValidateNumberOptions;
 export declare type PropOptionsWithStringValidate = PropOptions & ValidateStringOptions;
-export declare type PropOptionsWithValidate = PropOptionsWithNumberValidate | PropOptionsWithStringValidate;
+export declare type PropOptionsWithTTLOptions = PropOptions & TTLOptions;
+export declare type PropOptionsWithValidate = PropOptionsWithNumberValidate | PropOptionsWithStringValidate | PropOptionsWithTTLOptions;
 export declare const prop: (options?: PropOptionsWithValidate) => (target: any, key: string) => void;
 export interface ArrayPropOptions extends BasePropOptions {
     items?: any;

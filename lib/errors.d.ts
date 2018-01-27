@@ -7,6 +7,9 @@ export declare class NotNumberTypeError extends Error {
 export declare class NotStringTypeError extends Error {
     constructor(key: string);
 }
+export declare class NotDateTypeError extends Error {
+    constructor(key: string);
+}
 export declare class NoMetadataError extends Error {
     constructor(key: string);
 }

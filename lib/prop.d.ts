@@ -18,10 +18,10 @@ export interface BasePropOptions {
     expires?: string | number;
     get?: (val: any, schemaType?: SchemaType) => any;
     set?: (val: any, schemaType?: SchemaType) => any;
-    validate?: RegExp | [RegExp, string] | SyncValidationOption | PromiseValidationOption;
 }
 export interface PropOptions extends BasePropOptions {
     ref?: any;
+    validate?: RegExp | [RegExp, string] | SyncValidationOption | PromiseValidationOption;
 }
 export interface ValidateNumberOptions {
     min?: number | [number, string];
